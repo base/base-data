@@ -143,8 +143,13 @@ function namespaceFile(fp, val, opts) {
  */
 
 function rename(fp, opts) {
-  var fn = opts.namespace || opts.renameKey;
-  var renameFn = typeof fn === 'function' ? fn : name;
+  var renameFn = name;
+  if (typeof opts.namespace === 'function') {
+    renameFn = opts.namespace;
+  }
+  if (typeof opts.renameKey === 'function') {
+    renameFn = opts.renameKey;
+  }
   return renameFn(fp);
 }
 
