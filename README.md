@@ -2,7 +2,7 @@
 
 > adds a `data` method to base-methods.
 
-Adds a `data` method to [base-methods][] that can be used for setting, getting and loading data onto a specified object in your application.
+Adds a `data` method to [base-methods](https://github.com/jonschlinkert/base-methods) that can be used for setting, getting and loading data onto a specified object in your application.
 
 ## Install
 
