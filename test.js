@@ -89,11 +89,22 @@ describe('data', function () {
       assert.equal(app.cache.data.c, 'd');
     });
 
-    it('should namespace data using a custom rename function:', function () {
+    it('should namespace data using a custom namespace function:', function () {
       function rename(key) {
         return 'foo-' + path.basename(key, path.extname(key));
       }
       app.mixin('data', data({namespace: rename}));
+      app.data({c: 'd'});
+      app.data('fixtures/a.json');
+      assert.equal(app.cache.data['foo-a'].a, 'b');
+      assert.equal(app.cache.data.c, 'd');
+    });
+
+    it('should namespace data using a custom renameKey function:', function () {
+      function rename(key) {
+        return 'foo-' + path.basename(key, path.extname(key));
+      }
+      app.mixin('data', data({renameKey: rename}));
       app.data({c: 'd'});
       app.data('fixtures/a.json');
       assert.equal(app.cache.data['foo-a'].a, 'b');
@@ -243,6 +254,17 @@ describe('data', function () {
         return 'foo-' + path.basename(key, path.extname(key));
       }
       app.mixin('data', data('foo.bar', {namespace: rename}));
+      app.data({c: 'd'});
+      app.data('fixtures/a.json');
+      assert.equal(app.foo.bar['foo-a'].a, 'b');
+      assert.equal(app.foo.bar.c, 'd');
+    });
+
+    it('should namespace data using a custom renameKey function:', function () {
+      function rename(key) {
+        return 'foo-' + path.basename(key, path.extname(key));
+      }
+      app.mixin('data', data('foo.bar', {renameKey: rename}));
       app.data({c: 'd'});
       app.data('fixtures/a.json');
       assert.equal(app.foo.bar['foo-a'].a, 'b');

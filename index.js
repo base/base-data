@@ -102,7 +102,7 @@ function reduceFiles(files, opts) {
         arr.push(val);
         continue;
       }
-      if (opts.namespace) {
+      if (opts.namespace || opts.renameKey) {
         arr.push(namespaceFile(fp, val, opts));
         continue;
       }
@@ -143,9 +143,8 @@ function namespaceFile(fp, val, opts) {
  */
 
 function rename(fp, opts) {
-  var renameFn = typeof opts.namespace === 'function'
-    ? opts.namespace
-    : name;
+  var fn = opts.namespace || opts.renameKey;
+  var renameFn = typeof fn === 'function' ? fn : name;
   return renameFn(fp);
 }
 
