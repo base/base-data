@@ -111,16 +111,6 @@ describe('data', function () {
       assert.equal(app.cache.data.c, 'd');
     });
 
-    it('should support a function as the second arg:', function () {
-      app.mixin('data', data());
-      app.data({c: 'd'});
-      app.data('fixtures/a.json', function (fp) {
-        return require(path.resolve(fp));
-      });
-      assert.equal(app.cache.data.a, 'b');
-      assert.equal(app.cache.data.c, 'd');
-    });
-
     it('should merge `data.json` onto the root of the object:', function () {
       app.mixin('data', data());
       app.data({c: 'd'});
@@ -219,16 +209,6 @@ describe('data', function () {
       app.mixin('data', data('foo.bar'));
       app.data({c: 'd'});
       app.data('fixtures/a.json');
-      assert.equal(app.foo.bar.a, 'b');
-      assert.equal(app.foo.bar.c, 'd');
-    });
-
-    it('should support a function as the second arg:', function () {
-      app.mixin('data', data('foo.bar'));
-      app.data({c: 'd'});
-      app.data('fixtures/a.json', function (fp) {
-        return require(path.resolve(fp));
-      });
       assert.equal(app.foo.bar.a, 'b');
       assert.equal(app.foo.bar.c, 'd');
     });

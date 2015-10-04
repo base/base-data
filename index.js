@@ -25,9 +25,9 @@ var utils = require('./utils');
  * @api public
  */
 
-module.exports = function (prop, config) {
+module.exports = function (prop, defaults) {
   if (typeof prop === 'object') {
-    config = prop;
+    defaults = prop;
     prop = 'cache.data';
   }
 
@@ -44,13 +44,8 @@ module.exports = function (prop, config) {
       return utils.merge(this, prop, key);
     }
 
-    if (typeof val === 'function') {
-      var res = val.call(this, key);
-      return utils.merge(this, prop, res);
-    }
-
     if (isGlob(key, val)) {
-      var opts = utils.extend({}, this.options, config, val);
+      var opts = utils.extend({}, defaults, this.options, val);
       var files = requireData(key, opts);
       files.forEach(function (file) {
         utils.merge(this, prop, file);
