@@ -35,32 +35,35 @@ module.exports = function (prop, defaults) {
     prop = 'cache.data';
   }
 
-  return function (key, val) {
-    if (!utils.has(this, prop)) {
-      this.set(prop, {});
-    }
+  return function(app) {
+    app.mixin('data', function (key, val) {
+      if (!utils.has(this, prop)) {
+        this.set(prop, {});
+      }
 
-    if (isObject(key)) {
-      return utils.merge(this, prop, key);
-    }
+      if (isObject(key)) {
+        return utils.merge(this, prop, key);
+      }
 
-    if (isGlob(key, val)) {
-      var opts = utils.extend({}, defaults, this.options, val);
-      var files = requireData(key, opts);
-      files.forEach(function (file) {
-        utils.merge(this, prop, file);
-      }.bind(this));
+      if (isGlob(key, val)) {
+        var opts = utils.extend({}, defaults, this.options, val);
+        var files = requireData(key, opts);
+        files.forEach(function (file) {
+          utils.merge(this, prop, file);
+        }.bind(this));
+        return this;
+      }
+
+      if (typeof key !== 'string') {
+        throw new TypeError('expected value to be a string, array or object.');
+      }
+
+      utils.merge(this, prop + '.' + key, val);
       return this;
-    }
-
-    if (typeof key !== 'string') {
-      throw new TypeError('expected value to be a string, array or object.');
-    }
-
-    utils.merge(this, prop + '.' + key, val);
-    return this;
+    });
   };
 };
+
 
 /**
  * Require a glob of data files
