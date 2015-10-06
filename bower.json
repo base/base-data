@@ -19,7 +19,7 @@
     "resolve-glob": "^0.1.2"
   },
   "devDependencies": {
-    "base-methods": "^0.2.10",
+    "base-methods": "^0.2.11",
     "gulp": "^3.9.0",
     "gulp-istanbul": "^0.10.1",
     "gulp-jshint": "^1.11.2",
