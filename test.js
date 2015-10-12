@@ -1,10 +1,3 @@
-/*!
- * base-data <https://github.com/jonschlinkert/base-data>
- *
- * Copyright (c) 2015 .
- * Licensed under the MIT license.
- */
-
 'use strict';
 
 require('mocha');

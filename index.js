@@ -34,8 +34,18 @@ module.exports = function (prop, defaults) {
   if (typeof prop === 'undefined') {
     prop = 'cache.data';
   }
-
   return function(app) {
+    if (!app.dataLoaders) {
+      app.define('dataLoaders', []);
+    }
+
+    app.mixin('dataLoader', function(name, fn) {
+      this.dataLoaders.push({name: name, fn: fn});
+      return this;
+    });
+
+    app.dataLoader('json', requireData);
+
     app.mixin('data', function (key, val) {
       if (!utils.has(this, prop)) {
         this.set(prop, {});
@@ -47,7 +57,9 @@ module.exports = function (prop, defaults) {
 
       if (isGlob(key, val)) {
         var opts = utils.extend({}, defaults, this.options, val);
-        var files = requireData(key, opts);
+        var fn = matchLoader(this.dataLoaders, key);
+        var files = arrayify(fn(key, opts));
+
         files.forEach(function (file) {
           utils.merge(this, prop, file);
         }.bind(this));
@@ -63,6 +75,30 @@ module.exports = function (prop, defaults) {
     });
   };
 };
+
+function formatExt(ext) {
+  if (ext.charAt(0) !== '.') {
+    return '.' + ext;
+  }
+  return ext;
+}
+
+function matchLoader(arr, key) {
+  var len = arr.length, i = -1;
+  var ext = path.extname(key);
+
+  while (++i < len) {
+    var loader = arr[i];
+    var name = loader.name;
+    if (typeof name === 'string' && ext === formatExt(name)) {
+      return loader.fn;
+    }
+    if (name instanceof RegExp && name.test(ext)) {
+      return loader.fn;
+    }
+  }
+  return arr[0].fn;
+}
 
 
 /**
