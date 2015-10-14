@@ -35,22 +35,22 @@ module.exports = function (prop, defaults) {
     prop = 'cache.data';
   }
   return function(app) {
-    if (!app.dataLoaders) {
-      app.define('dataLoaders', []);
+    if (!utils.has(this, prop)) {
+      this.set(prop, {});
     }
 
-    app.mixin('dataLoader', function(name, fn) {
+    if (!this.dataLoaders) {
+      this.define('dataLoaders', []);
+    }
+
+    this.mixin('dataLoader', function(name, fn) {
       this.dataLoaders.push({name: name, fn: fn});
       return this;
     });
 
-    app.dataLoader('json', requireData);
+    this.dataLoader('json', requireData);
 
-    app.mixin('data', function (key, val) {
-      if (!utils.has(this, prop)) {
-        this.set(prop, {});
-      }
-
+    this.mixin('data', function (key, val) {
       if (isObject(key)) {
         return utils.merge(this, prop, key);
       }
