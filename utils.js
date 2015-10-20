@@ -72,7 +72,7 @@ utils.tryRead = function(fp) {
 
 utils.namespace = function(key, data, opts) {
   var obj = {};
-  obj[utils.rename(key, opts)] = data;
+  obj[utils.rename(key, data, opts)] = data;
   return obj;
 };
 
@@ -80,8 +80,8 @@ utils.namespace = function(key, data, opts) {
  * Rename a file
  */
 
-utils.rename = function(key, opts) {
-  var renameFn = utils.nameFn;
+utils.rename = function(key, data, opts) {
+  var renameFn = utils.basename;
   if (typeof opts.namespace === 'string') {
     return opts.namespace;
   }
@@ -91,14 +91,16 @@ utils.rename = function(key, opts) {
   if (typeof opts.renameKey === 'function') {
     renameFn = opts.renameKey;
   }
-  return renameFn(key);
+  return renameFn(key, data, opts);
 };
 
 /**
- * Get the name of a filepath excluding extension
+ * Get the name of a filepath excluding extension.
+ * This is used as the default renaming function
+ * when `namespace` is true.
  */
 
-utils.nameFn = function(fp) {
+utils.basename = function(fp) {
   return path.basename(fp, path.extname(fp));
 };
 
