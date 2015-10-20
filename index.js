@@ -158,7 +158,7 @@ module.exports = function(prop, defaults) {
       if (!fns) return null;
 
       var opts = utils.extend({}, app.options, options);
-      var name = utils.nameFn(fp);
+      var name = utils.basename(fp);
       var val = utils.tryRead(fp);
       if (val === null) return null;
 

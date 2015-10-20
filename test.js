@@ -1,6 +1,7 @@
 'use strict';
 
 require('mocha');
+var path = require('path');
 var assert = require('assert');
 var Base = require('base-methods');
 var yaml = require('js-yaml');
@@ -331,7 +332,7 @@ describe('data', function () {
       assert(app.cache.data.a.a === 'b');
     });
 
-    it('should use the specified namespace', function () {
+    it('should use the namespace specified as a string', function () {
       app.data('fixtures/a.json', {namespace: 'abc'});
       assert(app.cache.data.abc.a === 'b');
     });
@@ -342,19 +343,23 @@ describe('data', function () {
     });
 
     it('should use a custom namespace function:', function () {
-      function rename(key) {
-        return 'foo-' + utils.nameFn(key);
+      function rename(fp) {
+        var segs = fp.split(path.sep);
+        segs.pop();
+        return segs.pop();
       }
       app.use(data({namespace: rename}));
       app.data({c: 'd'});
-      app.data('fixtures/a.json');
-      assert.equal(app.cache.data['foo-a'].a, 'b');
+      app.data('fixtures/*/index.json');
+      assert.equal(app.cache.data.one.name, 'one');
+      assert.equal(app.cache.data.two.name, 'two');
+      assert.equal(app.cache.data.three.name, 'three');
       assert.equal(app.cache.data.c, 'd');
     });
 
     it('should namespace data using a custom renameKey function:', function () {
       function rename(key) {
-        return 'foo-' + utils.nameFn(key);
+        return 'foo-' + utils.basename(key);
       }
       app.use(data({renameKey: rename}));
       app.data({c: 'd'});
@@ -445,7 +450,7 @@ describe('custom property', function () {
 
   it('should namespace data using a custom namespace function:', function () {
     function rename(key) {
-      return 'foo-' + utils.nameFn(key);
+      return 'foo-' + utils.basename(key);
     }
     app.use(data('foo.bar', {namespace: rename}));
     app.data({c: 'd'});
@@ -456,7 +461,7 @@ describe('custom property', function () {
 
   it('should namespace data using a custom renameKey function:', function () {
     function rename(key) {
-      return 'foo-' + utils.nameFn(key);
+      return 'foo-' + utils.basename(key);
     }
     app.use(data('foo.bar', {renameKey: rename}));
     app.data({c: 'd'});
