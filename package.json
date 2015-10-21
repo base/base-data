@@ -1,7 +1,7 @@
 {
   "name": "base-data",
   "description": "adds a `data` method to base-methods.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://github.com/jonschlinkert/base-data",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/base-data",
