@@ -85,10 +85,11 @@ module.exports = function(prop, defaults) {
      */
 
     this.mixin('data', function (key, value, union) {
+      var args = [].slice.call(arguments);
       var type = utils.typeOf(key);
 
       if (type === 'object') {
-        var args = utils.flatten([].slice.call(arguments));
+        args = utils.flatten(args);
         var len = args.length, i = -1;
         while (++i < len) {
           utils.mergeValue(this, prop, args[i]);
@@ -98,7 +99,11 @@ module.exports = function(prop, defaults) {
 
       if (utils.isGlob(key, value)) {
         var opts = utils.extend({}, defaults, this.options);
-        var files = utils.resolve.sync.apply(null, arguments);
+        if (utils.isObject(args[args.length - 1])) {
+          opts = utils.extend({}, opts, args.pop());
+        }
+        args.push(opts);
+        var files = utils.resolve.sync.apply(null, args);
         var len = files.length, i = -1;
         while (++i < len) {
           readFile(this, files[i], opts);
@@ -112,7 +117,6 @@ module.exports = function(prop, defaults) {
       }
 
       if (type === 'string') {
-        var args = [].slice.call(arguments);
         var opts = utils.extend({}, defaults, this.options);
         var last = args[args.length - 1];
 
