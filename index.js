@@ -88,6 +88,8 @@ module.exports = function(prop, defaults) {
       var args = [].slice.call(arguments);
       var type = utils.typeOf(key);
 
+      this.emit('data', args);
+
       if (type === 'object') {
         args = utils.flatten(args);
         var len = args.length, i = -1;
@@ -134,7 +136,7 @@ module.exports = function(prop, defaults) {
 
         key = prop + '.' + key;
         if (typeof value === 'string') {
-          this.set(key, value);
+          utils.set(this, key, value);
           return this;
         }
 
@@ -142,13 +144,12 @@ module.exports = function(prop, defaults) {
           if (union) {
             utils.unionValue(this, key, value);
           } else {
-            this.set(key, value);
+            utils.set(this, key, value);
           }
           return this;
         }
 
         utils.mergeValue(this, key, value);
-        this.emit('data', key, value);
         return this;
       }
 

@@ -42,6 +42,20 @@ describe('data', function () {
       app.data('a', 'b');
       assert.equal(app.cache.data.a, 'b');
     });
+
+    it('should emit a data event with "args"', function (cb) {
+      app.use(data());
+
+      app.on('data', function (args) {
+        assert(args);
+        assert(Array.isArray(args));
+        assert(args.length === 2);
+        cb();
+      });
+
+      app.data('a', 'b');
+      assert.equal(app.cache.data.a, 'b');
+    });
   });
 
   describe('custom properties', function () {

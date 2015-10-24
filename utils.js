@@ -16,9 +16,10 @@ require('kind-of', 'typeOf');
 require('arr-flatten', 'flatten');
 require('resolve-glob', 'resolve');
 require('extend-shallow', 'extend');
+require('set-value', 'set');
+require('has-value', 'has');
 require('merge-value');
 require('union-value');
-require('has-value', 'has');
 require = fn;
 
 /**
