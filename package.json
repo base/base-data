@@ -1,7 +1,7 @@
 {
   "name": "base-data",
   "description": "adds a `data` method to base-methods.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/jonschlinkert/base-data",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/base-data",
@@ -26,7 +26,7 @@
     "has-glob": "^0.1.1",
     "has-value": "^0.2.0",
     "kind-of": "^2.0.1",
-    "lazy-cache": "^0.2.3",
+    "lazy-cache": "^0.2.4",
     "merge-value": "^0.1.1",
     "resolve-glob": "^0.1.3",
     "set-value": "^0.2.0",
