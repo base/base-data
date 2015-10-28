@@ -14,10 +14,15 @@ describe('data', function () {
     app = new Base();
   });
 
-  describe('prototype', function () {
-    it('should add the data method to the `app` prototype:', function () {
+  describe('method', function () {
+    it('should add the data method to the `app` instance:', function () {
       app.use(data());
-      assert.equal(typeof Base.prototype.data, 'function');
+      assert.equal(typeof app.data, 'function');
+    });
+
+    it('should not add the data method to the `Base` prototype:', function () {
+      app.use(data());
+      assert.notEqual(typeof Base.prototype.data, 'function');
     });
   });
 
@@ -174,6 +179,14 @@ describe('data', function () {
       app.use(data());
       app.data({c: 'd'});
       app.data('fixtures/*.json');
+      assert.equal(app.cache.data.a, 'b');
+      assert.equal(app.cache.data.c, 'd');
+    });
+
+    it('should pass options to matched:', function () {
+      app.use(data());
+      app.data({c: 'd'});
+      app.data('*.json', {cwd: 'fixtures'});
       assert.equal(app.cache.data.a, 'b');
       assert.equal(app.cache.data.c, 'd');
     });

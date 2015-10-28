@@ -49,7 +49,7 @@ module.exports = function(prop, defaults) {
      * @api public
      */
 
-    this.mixin('dataLoader', function(name, fn) {
+    this.define('dataLoader', function(name, fn) {
       this.dataLoaders.push({name: name, fn: fn});
       return this;
     });
@@ -84,7 +84,7 @@ module.exports = function(prop, defaults) {
      * @api public
      */
 
-    this.mixin('data', function (key, value, union) {
+    this.define('data', function (key, value, union) {
       var args = [].slice.call(arguments);
       var type = utils.typeOf(key);
 
