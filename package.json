@@ -36,6 +36,7 @@
     "base-methods": "^0.6.2",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.1",
+    "gulp-format-md": "^0.1.4",
     "gulp-istanbul": "^0.10.1",
     "gulp-mocha": "^2.1.3",
     "js-yaml": "^3.4.3",
@@ -54,10 +55,18 @@
   "verb": {
     "related": {
       "list": [
+        "base-cli",
+        "base-config",
         "base-methods",
         "base-options",
-        "base-plugins"
+        "base-pipeline",
+        "base-plugins",
+        "base-store"
       ]
-    }
+    },
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "layout": "default"
   }
 }
