@@ -55,9 +55,9 @@
   "verb": {
     "related": {
       "list": [
-        "base-plugins",
+        "base-methods",
         "base-options",
-        "base-methods"
+        "base-plugins"
       ]
     }
   }
