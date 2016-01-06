@@ -596,17 +596,18 @@ describe('dataLoader', function () {
 
     it('should load data.yaml object on the root', function () {
       app.data('fixtures/*.yaml');
-      assert(app.cache.data.me === 'I\'m a yaml file at the root!');
+      assert(app.cache.data.me1 === 'I\'m a yaml file at the root!');
     });
 
     it('should load data.yml object on the root', function () {
       app.data('fixtures/*.yml');
-      assert(app.cache.data.me === 'I\'m a yml file at the root!');
+      assert(app.cache.data.me2 === 'I\'m a yml file at the root!');
     });
 
     it('should load data.* object on the root', function () {
       app.data('fixtures/*.{yml,yaml}');
-      assert(app.cache.data.me === 'I\'m a yml file at the root!');
+      assert.equal(app.cache.data.me1, 'I\'m a yaml file at the root!');
+      assert.equal(app.cache.data.me2, 'I\'m a yml file at the root!');
     });
 
     it('should load data from a glob of yaml files', function () {
