@@ -24,22 +24,21 @@
     "arr-flatten": "^1.0.1",
     "extend-shallow": "^2.0.1",
     "has-glob": "^0.1.1",
-    "has-value": "^0.2.0",
-    "kind-of": "^2.0.1",
-    "lazy-cache": "^0.2.4",
+    "has-value": "^0.3.0",
+    "kind-of": "^3.0.2",
+    "lazy-cache": "^1.0.3",
     "merge-value": "^0.1.1",
-    "resolve-glob": "^0.1.3",
-    "set-value": "^0.2.0",
-    "union-value": "^0.1.1"
+    "resolve-glob": "^0.1.8",
+    "set-value": "^0.3.2",
+    "union-value": "^0.2.1"
   },
   "devDependencies": {
-    "base-methods": "^0.2.14",
+    "base-methods": "^0.6.2",
     "gulp": "^3.9.0",
+    "gulp-eslint": "^1.1.1",
     "gulp-istanbul": "^0.10.1",
-    "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",
     "js-yaml": "^3.4.3",
-    "jshint-stylish": "^2.0.1",
     "mocha": "*"
   },
   "keywords": [
