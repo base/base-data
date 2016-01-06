@@ -31,11 +31,9 @@ module.exports = function(prop, defaults) {
      * Register a data loader for loading data onto `app.cache.data`.
      *
      * ```js
-     * var fs = require('fs');
      * var yaml = require('js-yaml');
      *
-     * app.dataLoader('yml', function(fp) {
-     *   var str = fs.readFileSync(fp, 'utf8');
+     * app.dataLoader('yml', function(str, fp) {
      *   return yaml.safeLoad(str);
      * });
      *
