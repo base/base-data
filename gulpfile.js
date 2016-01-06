@@ -2,28 +2,25 @@
 
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
-var stylish = require('jshint-stylish');
 var istanbul = require('gulp-istanbul');
-var jshint = require('gulp-jshint');
+var eslint = require('gulp-eslint');
 
-var lint = ['index.js', 'utils.js'];
-
-gulp.task('coverage', function () {
-  return gulp.src(lint)
-    .pipe(istanbul())
+gulp.task('coverage', function() {
+  return gulp.src(['index.js', 'utils.js'])
+    .pipe(istanbul({includeUntested: true}))
     .pipe(istanbul.hookRequire());
 });
 
-gulp.task('test', ['coverage'], function () {
+gulp.task('mocha', ['coverage'], function() {
   return gulp.src('test.js')
-    .pipe(mocha({reporter: 'spec'}))
+    .pipe(mocha())
     .pipe(istanbul.writeReports());
 });
 
-gulp.task('lint', function () {
-  return gulp.src(lint)
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+gulp.task('eslint', function() {
+  return gulp.src('*.js')
+    .pipe(eslint())
+    .pipe(eslint.format());
 });
 
-gulp.task('default', ['test', 'lint']);
+gulp.task('default', ['mocha', 'eslint']);
