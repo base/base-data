@@ -160,7 +160,7 @@ console.log(app.cache.data);
 
 ## History
 
-**v0.3.5**
+**v0.3.6**
 
 * adds a basic loader that only calls the `JSON.parse` method, if no other loaders are defined
 * calls `.isRegistered` from [base](https://github.com/node-base/base) to ensure the plugin is only loaded once on an instance

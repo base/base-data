@@ -29,11 +29,11 @@
     "lazy-cache": "^1.0.3",
     "merge-value": "^0.1.1",
     "resolve-glob": "^0.1.8",
-    "set-value": "^0.3.2",
-    "union-value": "^0.2.1"
+    "set-value": "^0.3.3",
+    "union-value": "^0.2.3"
   },
   "devDependencies": {
-    "base-methods": "^0.6.2",
+    "base": "^0.6.4",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.1",
     "gulp-format-md": "^0.1.4",
@@ -55,9 +55,9 @@
   "verb": {
     "related": {
       "list": [
+        "base",
         "base-cli",
         "base-config",
-        "base-methods",
         "base-options",
         "base-pipeline",
         "base-plugins",
@@ -67,6 +67,9 @@
     "plugins": [
       "gulp-format-md"
     ],
-    "layout": "default"
+    "layout": "default",
+    "reflinks": [
+      "base"
+    ]
   }
 }
