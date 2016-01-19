@@ -19,6 +19,8 @@ module.exports = function(prop, defaults) {
   }
 
   return function plugin() {
+    if (this.isRegistered(prop)) return;
+
     if (!utils.has(this, prop)) {
       this.set(prop, {});
     }
@@ -176,6 +178,7 @@ module.exports = function(prop, defaults) {
       } else {
         app.data(val);
       }
+      return val;
     }
   };
 };

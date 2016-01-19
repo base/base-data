@@ -31,6 +31,12 @@ utils.matchLoaders = function(loaders, fp) {
   var ext = path.extname(fp);
   var fns = [];
 
+  if (len === 0 && ext === '.json') {
+    return [function(str) {
+      return JSON.parse(str);
+    }];
+  }
+
   while (++i < len) {
     var loader = loaders[i];
     var name = loader.name;

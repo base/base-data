@@ -2,8 +2,8 @@
 
 require('mocha');
 var path = require('path');
+var Base = require('base');
 var assert = require('assert');
-var Base = require('base-methods');
 var yaml = require('js-yaml');
 var data = require('./');
 var utils = data.utils;
@@ -253,6 +253,16 @@ describe('data', function () {
       assert.deepEqual(app.cache.data.a, {b: 'c'});
     });
 
+    it('should return a value when a single string arg is passed', function () {
+      app.data({abc: 'xyz'});
+      assert.equal(app.data('abc'), 'xyz');
+    });
+
+    it('should read a file from a single string arg', function () {
+      app.data('fixtures/a.json');
+      assert.equal(app.data('a'), 'b');
+    });
+
     it('should merge a key/value pair when value is an object:', function () {
       app.data('a', {b: 'c'});
       app.data('a', {d: 'e'});
@@ -347,7 +357,11 @@ describe('data', function () {
     });
 
     it('should namespace data using the default rename function:', function () {
+      app = new Base();
       app.use(data({namespace: true}));
+      app.dataLoader('json', function (str) {
+        return JSON.parse(str);
+      });
       app.data({c: 'd'});
       app.data('fixtures/a.json');
       assert.equal(app.cache.data.a.a, 'b');
@@ -370,12 +384,16 @@ describe('data', function () {
     });
 
     it('should use a custom namespace function:', function () {
+      app = new Base();
       function rename(fp) {
         var segs = fp.split(path.sep);
         segs.pop();
         return segs.pop();
       }
       app.use(data({namespace: rename}));
+      app.dataLoader('json', function (str) {
+        return JSON.parse(str);
+      });
       app.data({c: 'd'});
       app.data('fixtures/*/index.json');
       assert.equal(app.cache.data.one.name, 'one');
@@ -385,10 +403,14 @@ describe('data', function () {
     });
 
     it('should namespace data using a custom renameKey function:', function () {
+      app = new Base();
       function rename(key) {
         return 'foo-' + utils.basename(key);
       }
       app.use(data({renameKey: rename}));
+      app.dataLoader('json', function (str) {
+        return JSON.parse(str);
+      });
       app.data({c: 'd'});
       app.data('fixtures/a.json');
       assert.equal(app.cache.data['foo-a'].a, 'b');
