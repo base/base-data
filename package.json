@@ -1,7 +1,7 @@
 {
   "name": "base-data",
   "description": "adds a `data` method to base-methods.",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "homepage": "https://github.com/jonschlinkert/base-data",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/base-data",
@@ -53,6 +53,15 @@
     "plugin"
   ],
   "verb": {
+    "run": true,
+    "toc": true,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "base",
@@ -64,12 +73,12 @@
         "base-store"
       ]
     },
-    "plugins": [
-      "gulp-format-md"
-    ],
-    "layout": "default",
     "reflinks": [
-      "base"
-    ]
+      "base",
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
