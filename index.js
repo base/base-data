@@ -153,9 +153,11 @@ module.exports = function(prop, defaults) {
         return this;
       }
 
-      var msg = 'expected data to be '
-        + 'a string, object or array';
-      throw new TypeError(msg);
+      var err = new TypeError('expected data to be a string, object or array');
+      err.reason = 'arguments to app.data() are invalid';
+      err.args = [].slice.call(arguments);
+      err.origin = __filename;
+      this.emit('error', err);
     });
 
     function readFile(app, fp, options) {
