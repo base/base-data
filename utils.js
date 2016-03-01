@@ -11,19 +11,50 @@ var utils = require('lazy-cache')(require);
 var fn = require;
 
 require = utils;
-require('has-glob');
-require('kind-of', 'typeOf');
 require('arr-flatten', 'flatten');
-require('resolve-glob', 'resolve');
 require('extend-shallow', 'extend');
-require('set-value', 'set');
+require('get-value', 'get');
+require('has-glob');
 require('has-value', 'has');
+require('kind-of', 'typeOf');
 require('merge-value');
+require('mixin-deep', 'merge');
+require('read-file', 'read');
+require('resolve-glob', 'resolve');
+require('set-value', 'set');
 require('union-value');
 require = fn;
 
 /**
  * Utils
+ */
+
+/**
+ * Return the last item in `arr`
+ */
+
+utils.last = function(arr) {
+  if (!Array.isArray(arr)) {
+    throw new TypeError('expected value to be an array');
+  }
+  return arr[arr.length - 1];
+};
+
+/**
+ * Cast `val` to an array
+ */
+
+utils.arrayify = function(val) {
+  return val ? (Array.isArray(val) ? val : [val]) : [];
+};
+
+/**
+ * Iterate over registered data loaders and return any
+ * that match the given `filepath`
+ *
+ * @param {Array} `loaders`
+ * @param {String} `filepath`
+ * @return {Array} Returns an array of data-loader functions
  */
 
 utils.matchLoaders = function(loaders, fp) {
@@ -63,23 +94,12 @@ utils.formatExt = function(ext) {
 };
 
 /**
- * Attempt to read a file. Fail silently.
- */
-
-utils.tryRead = function(fp) {
-  try {
-    return fs.readFileSync(path.resolve(fp), 'utf8');
-  } catch (err) {}
-  return null;
-};
-
-/**
  * Namespace a file
  */
 
 utils.namespace = function(key, data, opts) {
   var obj = {};
-  obj[utils.rename(key, data, opts)] = data;
+  utils.set(obj, utils.rename(key, data, opts), data);
   return obj;
 };
 
@@ -102,7 +122,7 @@ utils.rename = function(key, data, opts) {
 };
 
 /**
- * Get the name of a filepath excluding extension.
+ * Get the basename of a filepath excluding extension.
  * This is used as the default renaming function
  * when `namespace` is true.
  */
@@ -113,7 +133,7 @@ utils.basename = function(fp) {
 
 /**
  * Return true if the key/value pair looks like a glob
- * and options or undefined.
+ * + options or undefined.
  */
 
 utils.isGlob = function(key, val) {
@@ -124,7 +144,7 @@ utils.isGlob = function(key, val) {
 };
 
 /**
- * Return true if the given value is an object.
+ * Return true if an object has any of the given keys.
  * @return {Boolean}
  */
 

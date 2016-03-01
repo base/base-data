@@ -7,10 +7,13 @@
 
 'use strict';
 
+var util = require('util');
+var cache = require('cache-base');
+var Cache = cache.namespace('cache');
 var utils = require('./utils');
 
 module.exports = function(prop, defaults) {
-  if (typeof prop === 'object') {
+  if (utils.isObject(prop)) {
     defaults = prop;
     prop = 'cache.data';
   }
@@ -19,15 +22,24 @@ module.exports = function(prop, defaults) {
   }
 
   return function plugin() {
-    if (this.isRegistered(prop)) return;
-
-    if (!utils.has(this, prop)) {
-      this.set(prop, {});
-    }
+    if (this.isRegistered('base-data:' + prop)) return;
 
     if (!this.dataLoaders) {
       this.define('dataLoaders', []);
     }
+
+    var cache = this.get(prop);
+    if (typeof cache === 'undefined') {
+      this.set(prop, {});
+      cache = this.get(prop);
+    }
+
+    /**
+     * Intantiate `Data` using `this[prop]` as the data cache
+     */
+
+    var data = new Data(cache);
+    cache = data.cache;
 
     /**
      * Register a data loader for loading data onto `app.cache.data`.
@@ -84,27 +96,32 @@ module.exports = function(prop, defaults) {
      * @api public
      */
 
-    this.define('data', function (key, value, union) {
+    this.define('data', function(key, value, union) {
+      if (typeof key === 'undefined') {
+        return this;
+      }
+
       var args = [].slice.call(arguments);
-      var type = utils.typeOf(key);
+      var last = utils.last(args);
+      var self = this;
 
       this.emit('data', args);
-
-      if (type === 'object') {
-        args = utils.flatten(args);
-        var len = args.length, i = -1;
-        while (++i < len) {
-          utils.mergeValue(this, prop, args[i]);
-        }
+      if (utils.isObject(key)) {
+        data.merge.apply(data, arguments);
         return this;
       }
 
       if (utils.isGlob(key, value)) {
-        var opts = utils.extend({}, defaults, this.options);
-        if (utils.isObject(args[args.length - 1])) {
-          opts = utils.extend({}, opts, args.pop());
+        var opts = utils.merge({}, defaults, this.options);
+
+        // if the last argument is options, merge in app.options
+        if (utils.isObject(last)) {
+          opts = utils.merge({}, opts, args.pop());
         }
+
+        // add options to args
         args.push(opts);
+
         var files = utils.resolve.sync.apply(null, args);
         var len = files.length, i = -1;
         while (++i < len) {
@@ -113,15 +130,15 @@ module.exports = function(prop, defaults) {
         return this;
       }
 
-      if (type === 'array' && arguments.length === 1) {
-        this.visit('data', key);
+      if (Array.isArray(key) && arguments.length === 1) {
+        key.forEach(function(val) {
+          self.data(val);
+        });
         return this;
       }
 
-      if (type === 'string') {
+      if (typeof key === 'string') {
         var opts = utils.extend({}, defaults, this.options);
-        var last = args[args.length - 1];
-
         if (utils.isOptions(last)) {
           opts = utils.extend({}, opts, args.pop());
         }
@@ -129,36 +146,42 @@ module.exports = function(prop, defaults) {
         if (args.length === 1) {
           var res = readFile(this, key, opts);
           if (res === null) {
-            return this.get(prop + '.' + key);
+            if (/[\\\/]/.test(key)) {
+              throw new Error('Failed to read: ' + key);
+            }
+
+            return data.get(key);
           }
           return this;
         }
 
-        key = prop + '.' + key;
-        if (typeof value === 'string') {
-          utils.set(this, key, value);
+        // if value is an object, merge it onto `key`
+        if (utils.isObject(value)) {
+          data.merge(key, value);
           return this;
         }
 
-        if (Array.isArray(value)) {
-          if (union) {
-            utils.unionValue(this, key, value);
-          } else {
-            utils.set(this, key, value);
-          }
+        if (union) {
+          data.union.apply(data, arguments);
           return this;
         }
 
-        utils.mergeValue(this, key, value);
+        data.set(key, value);
         return this;
       }
-
-      var err = new TypeError('expected data to be a string, object or array');
-      err.reason = 'arguments to app.data() are invalid';
-      err.args = [].slice.call(arguments);
-      err.origin = __filename;
-      this.emit('error', err);
+      return this;
     });
+
+    /**
+     * Expose all `Data` properties on `app.data`
+     */
+
+    this.data.__proto__ = data;
+
+    /**
+     * Read and parse a data file, and merge the resulting
+     * object onto `app[prop]`
+     */
 
     function readFile(app, fp, options) {
       var fns = utils.matchLoaders(app.dataLoaders, fp);
@@ -166,7 +189,7 @@ module.exports = function(prop, defaults) {
 
       var opts = utils.extend({}, app.options, options);
       var name = utils.basename(fp);
-      var val = utils.tryRead(fp);
+      var val = utils.read.sync(fp);
       if (val === null) return null;
 
       var len = fns.length, i = -1;
@@ -190,3 +213,39 @@ module.exports = function(prop, defaults) {
  */
 
 module.exports.utils = utils;
+
+
+
+function Data(cache, options) {
+  Cache.call(this);
+  this.options = options || {};
+  this.cache = cache || {};
+}
+
+util.inherits(Data, Cache);
+
+Data.prototype.merge = function(key, val) {
+  if (typeof key === 'string' && utils.isObject(val)) {
+    utils.mergeValue(this.cache, key, val);
+    return this;
+  }
+
+  // key is either an array or object
+  var args = utils.flatten([].slice.call(arguments));
+  var len = args.length;
+  var idx = -1;
+  while (++idx < len) {
+    this.cache = utils.merge(this.cache, args[idx]);
+  }
+  return this;
+};
+
+Data.prototype.union = function(key, val) {
+  utils.unionValue(this.cache, key, val);
+  return this;
+};
+
+Data.prototype.union = function(key, val) {
+  utils.unionValue(this.cache, key, val);
+  return this;
+};
