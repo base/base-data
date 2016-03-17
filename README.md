@@ -1,4 +1,4 @@
-# base-data [![NPM version](https://img.shields.io/npm/v/base-data.svg)](https://www.npmjs.com/package/base-data) [![Build Status](https://img.shields.io/travis/jonschlinkert/base-data.svg)](https://travis-ci.org/jonschlinkert/base-data)
+# base-data [![NPM version](https://img.shields.io/npm/v/base-data.svg)](https://www.npmjs.com/package/base-data) [![Build Status](https://img.shields.io/travis/node-base/base-data.svg)](https://travis-ci.org/node-base/base-data)
 
 > adds a `data` method to base-methods.
 
@@ -214,7 +214,7 @@ $ npm install -d && npm test
 ## License
 
 Copyright © 2016 [Jon Schlinkert](https://github.com/jonschlinkert)
-Released under the [MIT license](https://github.com/jonschlinkert/base-data/blob/master/LICENSE).
+Released under the [MIT license](https://github.com/node-base/base-data/blob/master/LICENSE).
 
 ***
 
