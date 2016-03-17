@@ -12,9 +12,9 @@ var cache = require('cache-base');
 var Cache = cache.namespace('cache');
 var utils = require('./utils');
 
-module.exports = function(prop, defaults) {
+module.exports = function(prop, config) {
   if (utils.isObject(prop)) {
-    defaults = prop;
+    config = prop;
     prop = 'cache.data';
   }
   if (typeof prop === 'undefined') {
@@ -22,7 +22,7 @@ module.exports = function(prop, defaults) {
   }
 
   return function plugin() {
-    if (this.isRegistered('base-data:' + prop)) return;
+    if (!isValidInstance(this, prop)) return;
 
     if (!this.dataLoaders) {
       this.define('dataLoaders', []);
@@ -112,7 +112,7 @@ module.exports = function(prop, defaults) {
       }
 
       if (utils.isGlob(key, value)) {
-        var opts = utils.merge({}, defaults, this.options);
+        var opts = utils.merge({}, config, this.options);
 
         // if the last argument is options, merge in app.options
         if (utils.isObject(last)) {
@@ -138,7 +138,7 @@ module.exports = function(prop, defaults) {
       }
 
       if (typeof key === 'string') {
-        var opts = utils.extend({}, defaults, this.options);
+        opts = utils.extend({}, config, this.options);
         if (utils.isOptions(last)) {
           opts = utils.extend({}, opts, args.pop());
         }
@@ -188,7 +188,6 @@ module.exports = function(prop, defaults) {
       if (!fns) return null;
 
       var opts = utils.extend({}, app.options, options);
-      var name = utils.basename(fp);
       var val = utils.read.sync(fp);
       if (val === null) return null;
 
@@ -205,6 +204,8 @@ module.exports = function(prop, defaults) {
       }
       return val;
     }
+
+    return plugin;
   };
 };
 
@@ -214,7 +215,13 @@ module.exports = function(prop, defaults) {
 
 module.exports.utils = utils;
 
-
+/**
+ * Create an instance of `Data` with the given `cache` object
+ * and `options`.
+ *
+ * @param {Object} `cache`
+ * @param {Object} `options`
+ */
 
 function Data(cache, options) {
   Cache.call(this);
@@ -245,7 +252,18 @@ Data.prototype.union = function(key, val) {
   return this;
 };
 
-Data.prototype.union = function(key, val) {
-  utils.unionValue(this.cache, key, val);
-  return this;
-};
+/**
+ * Validate the instance
+ */
+
+function isValidInstance(app, prop) {
+  if (app.isRegistered('base-data:' + prop)) {
+    return false;
+  }
+
+  var fn = app.options.validatePlugin;
+  if (typeof fn === 'function') {
+    return fn(app);
+  }
+  return true;
+}
