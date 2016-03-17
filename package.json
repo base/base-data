@@ -50,11 +50,17 @@
     "base",
     "base-methods",
     "baseplugin",
+    "context",
     "data",
     "extend",
+    "glob",
+    "json",
+    "load",
     "merge",
     "methods",
-    "plugin"
+    "plugin",
+    "templates",
+    "yaml"
   ],
   "verb": {
     "run": true,
@@ -71,7 +77,7 @@
         "base",
         "base-cli",
         "base-config",
-        "base-options",
+        "base-option",
         "base-pipeline",
         "base-plugins",
         "base-store"
