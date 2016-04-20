@@ -21,7 +21,7 @@ module.exports = function(prop, config) {
     prop = 'cache.data';
   }
 
-  return function plugin() {
+  return function baseData() {
     if (!isValidInstance(this, prop)) return;
 
     if (!this.dataLoaders) {
@@ -205,7 +205,7 @@ module.exports = function(prop, config) {
       return val;
     }
 
-    return plugin;
+    return baseData;
   };
 };
 
