@@ -1,7 +1,7 @@
 {
   "name": "base-data",
   "description": "adds a `data` method to base-methods.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "homepage": "https://github.com/node-base/base-data",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "node-base/base-data",
