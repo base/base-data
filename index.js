@@ -265,5 +265,9 @@ function isValidInstance(app, prop) {
   if (typeof fn === 'function') {
     return fn(app);
   }
+
+  if(app.isView || app.isItem) {
+    return false;
+  }
   return true;
 }
