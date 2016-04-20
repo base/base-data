@@ -190,7 +190,6 @@ var globKeys = [
   'srcBase'
 ];
 
-
 utils.isOptions = function(val) {
   if (!utils.isObject(val)) return false;
   var keys = globKeys.concat(optsKeys);

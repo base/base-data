@@ -128,7 +128,7 @@ describe('data', function() {
       app.use(data());
       try {
         app.data(function() {});
-      } catch(err) {
+      } catch (err) {
         assert(err);
         assert(err.message = 'expected value to be a string, array or object.');
       }
@@ -532,7 +532,7 @@ describe('custom property', function() {
     app.use(data('foo.bar'));
     try {
       app.data(function() {});
-    } catch(err) {
+    } catch (err) {
       assert(err);
       assert(err.message = 'expected value to be a string, array or object.');
     }
