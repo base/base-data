@@ -85,6 +85,84 @@ describe('data', function() {
     });
   });
 
+  describe('.set method', function() {
+    beforeEach(function() {
+      app = new Base();
+      app.use(data());
+    });
+
+    it('should set an object on `app.cache.data`', function() {
+      app.data.set({a: 'b'});
+      assert.equal(app.cache.data.a, 'b');
+    });
+
+    it('should set a key-value pair on `app.cache.data`', function() {
+      app.data.set('c', 'd');
+      assert.equal(app.cache.data.c, 'd');
+    });
+
+    it('should deeply set a key-value pair onto `app.cache.data`', function() {
+      app.data.set('a.b.c.d', {e: 'f'});
+      assert.deepEqual(app.cache.data.a, {b: {c: {d: {e: 'f'}}}});
+    });
+  });
+
+  describe('.get method', function() {
+    beforeEach(function() {
+      app = new Base();
+      app.use(data());
+    });
+
+    it('should get a value from `app.cache.data`', function() {
+      app.data.set({a: 'b'});
+      assert.equal(app.data.get('a'), 'b');
+    });
+
+    it('should get a deeply nested value from `app.cache.data`', function() {
+      app.data.merge({a: {b: {c: {d: {e: 'f'}}}}});
+      assert.deepEqual(app.data.get('a.b.c'), {d: {e: 'f'}});
+    });
+  });
+
+  describe('.merge method', function() {
+    beforeEach(function() {
+      app = new Base();
+      app.use(data());
+    });
+
+    it('should merge an object onto `app.cache.data`', function() {
+      app.data({c: 'd'});
+      app.data.merge({a: 'b'});
+      assert.equal(app.cache.data.a, 'b');
+      assert.equal(app.cache.data.c, 'd');
+    });
+
+    it('should deeply merge an object onto `app.cache.data`', function() {
+      app.data({c: {d: 'e'}});
+      app.data.merge({c: {f: 'g'}});
+      assert.deepEqual(app.cache.data.c, {d: 'e', f: 'g'});
+    });
+  });
+
+  describe('.union method', function() {
+    beforeEach(function() {
+      app = new Base();
+      app.use(data());
+    });
+
+    it('should union an array on `app.cache.data`', function() {
+      app.data({a: ['b', 'c']});
+      app.data.union('a', ['d', 'e']);
+      assert.deepEqual(app.cache.data.a, ['b', 'c', 'd', 'e']);
+    });
+
+    it('should deeply union an array on `app.cache.data`', function() {
+      app.data({a: {b: {c: ['b', 'c']}}});
+      app.data.union('a.b.c', ['d', 'e']);
+      assert.deepEqual(app.cache.data.a.b.c, ['b', 'c', 'd', 'e']);
+    });
+  });
+
   describe('filepath arguments', function() {
     beforeEach(function() {
       app = new Base();

@@ -231,6 +231,55 @@ function Data(cache, options) {
 
 util.inherits(Data, Cache);
 
+/**
+ * Shallow extend an object onto `app.cache.data`.
+ *
+ * ```js
+ * app.data({a: {b: {c: 'd'}}});
+ * app.data.extend('a.b', {x: 'y'});
+ * console.log(app.get('a.b'));
+ * //=> {c: 'd', x: 'y'}
+ * ```
+ * @name .data.extend
+ * @param {String|Object} `key` Property name or object to extend onto `app.cache.data`. Dot-notation may be used for extending nested properties.
+ * @param {Object} `value` The object to extend onto `app.cache.data`
+ * @return {Object} returns the instance for chaining
+ * @api public
+ */
+
+Data.prototype.extend = function(key, val) {
+  if (typeof key === 'string' && utils.isObject(val)) {
+    var current = this.get(key);
+    this.set(key, utils.extend({}, current, val));
+    return this;
+  }
+
+  // key is either an array or object
+  var args = utils.flatten([].slice.call(arguments));
+  var len = args.length;
+  var idx = -1;
+  while (++idx < len) {
+    utils.extend(this.cache, args[idx]);
+  }
+  return this;
+};
+
+/**
+ * Deeply merge an object onto `app.cache.data`.
+ *
+ * ```js
+ * app.data({a: {b: {c: {d: {e: 'f'}}}}});
+ * app.data.merge('a.b', {c: {d: {g: 'h'}}});
+ * console.log(app.get('a.b'));
+ * //=> {c: {d: {e: 'f', g: 'h'}}}
+ * ```
+ * @name .data.merge
+ * @param {String|Object} `key` Property name or object to merge onto `app.cache.data`. Dot-notation may be used for merging nested properties.
+ * @param {Object} `value` The object to merge onto `app.cache.data`
+ * @return {Object} returns the instance for chaining
+ * @api public
+ */
+
 Data.prototype.merge = function(key, val) {
   if (typeof key === 'string' && utils.isObject(val)) {
     utils.mergeValue(this.cache, key, val);
@@ -247,9 +296,67 @@ Data.prototype.merge = function(key, val) {
   return this;
 };
 
-Data.prototype.union = function(key, val) {
-  utils.unionValue(this.cache, key, val);
+/**
+ * Union the given value onto a new or existing array value on `app.cache.data`.
+ *
+ * ```js
+ * app.data({a: {b: ['c', 'd']}});
+ * app.data.union('a.b', ['e', 'f']}});
+ * console.log(app.get('a.b'));
+ * //=> ['c', 'd', 'e', 'f']
+ * ```
+ * @name .data.union
+ * @param {String} `key` Property name. Dot-notation may be used for nested properties.
+ * @param {Object} `array` The array to add or union on `app.cache.data`
+ * @return {Object} returns the instance for chaining
+ * @api public
+ */
+
+Data.prototype.union = function(key, arr) {
+  utils.unionValue(this.cache, key, arr);
   return this;
+};
+
+/**
+ * Set the given value onto `app.cache.data`.
+ *
+ * ```js
+ * app.data.set('a.b', ['c', 'd']}});
+ * console.log(app.get('a'));
+ * //=> {b: ['c', 'd']}
+ * ```
+ * @name .data.set
+ * @param {String|Object} `key` Property name or object to merge onto `app.cache.data`. Dot-notation may be used for nested properties.
+ * @param {any} `val` The value to set on `app.cache.data`
+ * @return {Object} returns the instance for chaining
+ * @api public
+ */
+
+Data.prototype.set = function(key, val) {
+  if (utils.isObject(key)) {
+    return this.merge.apply(this, arguments);
+  }
+  utils.set(this.cache, key, val);
+  return this;
+};
+
+/**
+ * Get the value of `key` from `app.cache.data`. Dot-notation may be used for getting
+ * nested properties.
+ *
+ * ```js
+ * app.data({a: {b: {c: 'd'}}});
+ * console.log(app.get('a.b'));
+ * //=> {c: 'd'}
+ * ```
+ * @name .data.get
+ * @param {String} `key` The name of the property to get.
+ * @return {any} Returns the value of `key`
+ * @api public
+ */
+
+Data.prototype.get = function(key) {
+  return utils.get(this.cache, key);
 };
 
 /**
