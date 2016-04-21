@@ -123,6 +123,98 @@ console.log(app.cache.data.e);
 //=> ['g', 'h']
 ```
 
+### [.data.extend](index.js#L250)
+
+Shallow extend an object onto `app.cache.data`.
+
+**Params**
+
+* `key` **{String|Object}**: Property name or object to extend onto `app.cache.data`. Dot-notation may be used for extending nested properties.
+* `value` **{Object}**: The object to extend onto `app.cache.data`
+* `returns` **{Object}**: returns the instance for chaining
+
+**Example**
+
+```js
+app.data({a: {b: {c: 'd'}}});
+app.data.extend('a.b', {x: 'y'});
+console.log(app.get('a.b'));
+//=> {c: 'd', x: 'y'}
+```
+
+### [.data.merge](index.js#L283)
+
+Deeply merge an object onto `app.cache.data`.
+
+**Params**
+
+* `key` **{String|Object}**: Property name or object to merge onto `app.cache.data`. Dot-notation may be used for merging nested properties.
+* `value` **{Object}**: The object to merge onto `app.cache.data`
+* `returns` **{Object}**: returns the instance for chaining
+
+**Example**
+
+```js
+app.data({a: {b: {c: {d: {e: 'f'}}}}});
+app.data.merge('a.b', {c: {d: {g: 'h'}}});
+console.log(app.get('a.b'));
+//=> {c: {d: {e: 'f', g: 'h'}}}
+```
+
+### [.data.union](index.js#L315)
+
+Union the given value onto a new or existing array value on `app.cache.data`.
+
+**Params**
+
+* `key` **{String}**: Property name. Dot-notation may be used for nested properties.
+* `array` **{Object}**: The array to add or union on `app.cache.data`
+* `returns` **{Object}**: returns the instance for chaining
+
+**Example**
+
+```js
+app.data({a: {b: ['c', 'd']}});
+app.data.union('a.b', ['e', 'f']}});
+console.log(app.get('a.b'));
+//=> ['c', 'd', 'e', 'f']
+```
+
+### [.data.set](index.js#L335)
+
+Set the given value onto `app.cache.data`.
+
+**Params**
+
+* `key` **{String|Object}**: Property name or object to merge onto `app.cache.data`. Dot-notation may be used for nested properties.
+* `val` **{any}**: The value to set on `app.cache.data`
+* `returns` **{Object}**: returns the instance for chaining
+
+**Example**
+
+```js
+app.data.set('a.b', ['c', 'd']}});
+console.log(app.get('a'));
+//=> {b: ['c', 'd']}
+```
+
+### [.data.get](index.js#L358)
+
+Get the value of `key` from `app.cache.data`. Dot-notation may be used for getting nested properties.
+
+**Params**
+
+* `key` **{String}**: The name of the property to get.
+* `returns` **{any}**: Returns the value of `key`
+
+**Example**
+
+```js
+app.data({a: {b: {c: 'd'}}});
+console.log(app.get('a.b'));
+//=> {c: 'd'}
+```
+
 ## Glob patterns
 
 Glob patterns may be passed as a string or array. All of these work:
