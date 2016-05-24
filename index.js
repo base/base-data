@@ -22,7 +22,7 @@ module.exports = function(prop, config) {
   }
 
   return function baseData() {
-    if (!isValidInstance(this, prop)) return;
+    if (!utils.isValid(this, prop)) return;
 
     if (!this.dataLoaders) {
       this.define('dataLoaders', []);
@@ -358,23 +358,3 @@ Data.prototype.set = function(key, val) {
 Data.prototype.get = function(key) {
   return utils.get(this.cache, key);
 };
-
-/**
- * Validate the instance
- */
-
-function isValidInstance(app, prop) {
-  if (app.isRegistered('base-data:' + prop)) {
-    return false;
-  }
-
-  var fn = app.options.validatePlugin;
-  if (typeof fn === 'function') {
-    return fn(app);
-  }
-
-  if(app.isView || app.isItem) {
-    return false;
-  }
-  return true;
-}

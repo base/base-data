@@ -9,6 +9,10 @@ var data = require('./');
 var utils = data.utils;
 var app;
 
+Base.use(function() {
+  this.isApp = true;
+});
+
 describe('data', function() {
   beforeEach(function() {
     app = new Base();

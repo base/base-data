@@ -16,6 +16,8 @@ require('extend-shallow', 'extend');
 require('get-value', 'get');
 require('has-glob');
 require('has-value', 'has');
+require('is-registered');
+require('is-valid-instance');
 require('kind-of', 'typeOf');
 require('merge-value');
 require('mixin-deep', 'merge');
@@ -28,6 +30,16 @@ require = fn;
 /**
  * Utils
  */
+
+utils.isValid = function(app, prop) {
+  if (!utils.isValidInstance(app, ['app', 'collection', 'list', 'views', 'group'])) {
+    return false;
+  }
+  if (utils.isRegistered(app, 'base-data:' + prop)) {
+    return false;
+  }
+  return true;
+};
 
 /**
  * Return the last item in `arr`
