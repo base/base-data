@@ -481,21 +481,6 @@ describe('data', function() {
       assert.equal(app.cache.data.three.name, 'three');
       assert.equal(app.cache.data.c, 'd');
     });
-
-    it('should namespace data using a custom renameKey function:', function() {
-      app = new Base();
-      function rename(key) {
-        return 'foo-' + utils.basename(key);
-      }
-      app.use(data({renameKey: rename}));
-      app.dataLoader('json', function(str) {
-        return JSON.parse(str);
-      });
-      app.data({c: 'd'});
-      app.data('fixtures/a.json');
-      assert.equal(app.cache.data['foo-a'].a, 'b');
-      assert.equal(app.cache.data.c, 'd');
-    });
   });
 });
 
@@ -582,17 +567,6 @@ describe('custom property', function() {
       return 'foo-' + utils.basename(key);
     }
     app.use(data('foo.bar', {namespace: rename}));
-    app.data({c: 'd'});
-    app.data('fixtures/a.json');
-    assert.equal(app.foo.bar['foo-a'].a, 'b');
-    assert.equal(app.foo.bar.c, 'd');
-  });
-
-  it('should namespace data using a custom renameKey function:', function() {
-    function rename(key) {
-      return 'foo-' + utils.basename(key);
-    }
-    app.use(data('foo.bar', {renameKey: rename}));
     app.data({c: 'd'});
     app.data('fixtures/a.json');
     assert.equal(app.foo.bar['foo-a'].a, 'b');

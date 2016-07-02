@@ -22,7 +22,9 @@ module.exports = function(prop, config) {
   }
 
   return function baseData() {
-    if (!utils.isValid(this, prop)) return;
+    if (!utils.isValid(this, prop)) {
+      return;
+    }
 
     if (!this.dataLoaders) {
       this.define('dataLoaders', []);
@@ -197,7 +199,7 @@ module.exports = function(prop, config) {
         val = fn.call(app, val, fp);
       }
 
-      if (opts.namespace || opts.renameKey) {
+      if (opts.namespace) {
         app.data(utils.namespace(fp, val, opts));
       } else {
         app.data(val);
