@@ -255,6 +255,21 @@ console.log(app.cache.data);
 
 ## History
 
+**v0.6.0**
+
+* removes `renameKey` option for namespacing
+* replaces [is-valid-instance](https://github.com/jonschlinkert/is-valid-instance) and [is-registered](https://github.com/jonschlinkert/is-registered) with [is-valid-app](https://github.com/jonschlinkert/is-valid-app)
+
+**v0.5.0**
+
+* uses [is-valid-instance](https://github.com/jonschlinkert/is-valid-instance) and [is-registered](https://github.com/jonschlinkert/is-registered) to ensure the smart plugin is registered on the correct objects.
+
+**v0.4.0**
+
+* _Refactored_
+
+* adds methods to `.data` for getting and setting data.
+
 **v0.3.6**
 
 * adds a basic loader that only calls the `JSON.parse` method, if no other loaders are defined
