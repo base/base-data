@@ -88,7 +88,10 @@
     "reflinks": [
       "base",
       "verb",
-      "verb-readme-generator"
+      "verb-readme-generator",
+      "is-valid-instance",
+      "is-registered",
+      "is-valid-app"
     ],
     "lint": {
       "reflinks": true
