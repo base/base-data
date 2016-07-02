@@ -22,13 +22,13 @@
   },
   "dependencies": {
     "arr-flatten": "^1.0.1",
-    "cache-base": "^0.8.3",
+    "cache-base": "^0.8.4",
     "extend-shallow": "^2.0.1",
-    "get-value": "^2.0.5",
+    "get-value": "^2.0.6",
     "has-glob": "^0.1.1",
     "has-value": "^0.3.1",
-    "is-registered": "^0.1.4",
-    "is-valid-instance": "^0.1.0",
+    "is-registered": "^0.1.5",
+    "is-valid-app": "^0.2.0",
     "kind-of": "^3.0.3",
     "lazy-cache": "^2.0.1",
     "merge-value": "^0.1.1",
@@ -87,7 +87,8 @@
     },
     "reflinks": [
       "base",
-      "verb"
+      "verb",
+      "verb-readme-generator"
     ],
     "lint": {
       "reflinks": true
