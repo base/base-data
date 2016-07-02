@@ -17,7 +17,7 @@ require('get-value', 'get');
 require('has-glob');
 require('has-value', 'has');
 require('is-registered');
-require('is-valid-instance');
+require('is-valid-app');
 require('kind-of', 'typeOf');
 require('merge-value');
 require('mixin-deep', 'merge');
@@ -32,13 +32,7 @@ require = fn;
  */
 
 utils.isValid = function(app, prop) {
-  if (!utils.isValidInstance(app, ['app', 'collection', 'list', 'views', 'group'])) {
-    return false;
-  }
-  if (utils.isRegistered(app, 'base-data:' + prop)) {
-    return false;
-  }
-  return true;
+  return utils.isValidApp(app, 'base-data:' + prop, ['app', 'collection', 'list', 'views', 'group']);
 };
 
 /**
@@ -126,9 +120,6 @@ utils.rename = function(key, data, opts) {
   }
   if (typeof opts.namespace === 'function') {
     renameFn = opts.namespace;
-  }
-  if (typeof opts.renameKey === 'function') {
-    renameFn = opts.renameKey;
   }
   return renameFn(key, data, opts);
 };
