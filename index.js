@@ -1,8 +1,8 @@
 /*!
- * base-data <https://github.com/jonschlinkert/base-data>
+ * base-data <https://github.com/node-base/base-data>
  *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
+ * Copyright (c) 2015-2017, Jon Schlinkert.
+ * Released under the MIT License.
  */
 
 'use strict';

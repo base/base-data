@@ -1,9 +1,9 @@
 {
   "name": "base-data",
   "description": "adds a `data` method to base-methods.",
-  "repository": "jonschlinkert/base-data",
+  "repository": "node-base/base-data",
   "license": "MIT",
-  "homepage": "https://github.com/jonschlinkert/base-data",
+  "homepage": "https://github.com/node-base/base-data",
   "authors": [
     "Jon Schlinkert (https://github.com/jonschlinkert)"
   ],
@@ -12,34 +12,64 @@
   ],
   "dependencies": {
     "arr-flatten": "^1.0.1",
+    "cache-base": "^0.8.4",
     "extend-shallow": "^2.0.1",
+    "get-value": "^2.0.6",
     "has-glob": "^0.1.1",
-    "has-value": "^0.2.0",
-    "kind-of": "^2.0.1",
-    "lazy-cache": "^0.2.3",
+    "has-value": "^0.3.1",
+    "is-registered": "^0.1.5",
+    "is-valid-app": "^0.2.0",
+    "kind-of": "^3.0.3",
+    "lazy-cache": "^2.0.1",
     "merge-value": "^0.1.1",
-    "resolve-glob": "^0.1.3",
-    "set-value": "^0.2.0",
-    "union-value": "^0.1.1"
+    "mixin-deep": "^1.1.3",
+    "read-file": "^0.2.0",
+    "resolve-glob": "^0.1.8",
+    "set-value": "^0.3.3",
+    "union-value": "^0.2.3"
   },
   "devDependencies": {
-    "base-methods": "^0.2.14",
-    "gulp": "^3.9.0",
-    "gulp-istanbul": "^0.10.1",
-    "gulp-jshint": "^1.11.2",
-    "gulp-mocha": "^2.1.3",
-    "js-yaml": "^3.4.3",
-    "jshint-stylish": "^2.0.1",
-    "mocha": "*"
+    "base": "^0.8.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-format-md": "^0.1.9",
+    "gulp-istanbul": "^0.10.4",
+    "gulp-mocha": "^2.2.0",
+    "js-yaml": "^3.6.1",
+    "mocha": "^2.5.1"
   },
   "keywords": [
     "base",
     "base-methods",
     "baseplugin",
+    "context",
     "data",
     "extend",
+    "glob",
+    "json",
+    "load",
     "merge",
     "methods",
-    "plugin"
+    "plugin",
+    "templates",
+    "yaml"
+  ],
+  "version": "0.6.0",
+  "bugs": {
+    "url": "https://github.com/node-base/base-data/issues"
+  },
+  "files": [
+    "index.js",
+    "utils.js"
+  ],
+  "ignore": [
+    "actual",
+    "bower_components",
+    "fixtures",
+    "node_modules",
+    "temp",
+    "test",
+    "test.js",
+    "tmp"
   ]
 }
