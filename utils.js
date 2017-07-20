@@ -104,8 +104,13 @@ utils.formatExt = function(ext) {
  */
 
 utils.namespace = function(key, data, opts) {
+  var stem = utils.rename(key, data, opts);
+  if (opts.namespace === true && stem === 'data') {
+    return data;
+  }
+
   var obj = {};
-  utils.set(obj, utils.rename(key, data, opts), data);
+  utils.set(obj, stem, data);
   return obj;
 };
 
