@@ -33,7 +33,7 @@
     "has-value": "^1.0.0",
     "is-registered": "^0.1.5",
     "is-valid-app": "^0.3.0",
-    "kind-of": "^5.0.0",
+    "kind-of": "^6.0.3",
     "lazy-cache": "^2.0.2",
     "merge-value": "^1.0.0",
     "mixin-deep": "^1.2.0",
